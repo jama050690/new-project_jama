@@ -1,10 +1,14 @@
+import path from "path";
+import { fileURLToPath } from "url";
+import { promises as fs } from "fs";
 import express from "express";
 import ejs from "ejs";
-import { promises as fs } from "fs";
-import { log } from "console";
 
 const server = express();
 const PORT = 3000;
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 server.use("/img", express.static("img"));
 server.use("/lib", express.static("lib"));
@@ -43,26 +47,23 @@ const dateTable = [
   },
 ];
 
-server.get("/", async (req, res) => {
-  const view = await fs.readFile("./index.html", "utf8");
+async function renderIndex(req, res) {
+  const view = await fs.readFile(
+    path.join(__dirname, "src", "index.html"),
+    "utf8"
+  );
   const home = ejs.render(view, {
     projectName: "My project",
     userName: "Jamshiddin",
   });
   res.send(home);
-});
+}
 
-server.get("/index.html", async (req, res) => {
-  const view = await fs.readFile("./index.html", "utf8");
-  const home = ejs.render(view, {
-    projectName: "My project",
-    userName: "Jamshiddin",
-  });
-  res.send(home);
-});
+server.get("/", renderIndex);
+server.get("/index.html", renderIndex);
 
-server.get("/error.html", async (req, res) => {
-  const view = await fs.readFile("./error.html", "utf8");
+server.get("/404", async (req, res) => {
+  const view = await fs.readFile("./src/error.html", "utf8");
   const home = ejs.render(view, {
     projectName: "My project",
     userName: "Jamshiddin",
@@ -70,7 +71,7 @@ server.get("/error.html", async (req, res) => {
   res.send(home);
 });
 server.get("/login.html", async (req, res) => {
-  const view = await fs.readFile("./login.html", "utf8");
+  const view = await fs.readFile("./src/login.html", "utf8");
   const home = ejs.render(view, {
     projectName: "My project",
     userName: "Jamshiddin",
@@ -78,7 +79,7 @@ server.get("/login.html", async (req, res) => {
   res.send(home);
 });
 server.get("/profile.html", async (req, res) => {
-  const view = await fs.readFile("./profile.html", "utf8");
+  const view = await fs.readFile("./src/profile.html", "utf8");
   const home = ejs.render(view, {
     projectName: "My project",
     userName: "Jamshiddin",
@@ -89,7 +90,7 @@ server.get("/profile.html", async (req, res) => {
   res.send(home);
 });
 server.get("/reset.html", async (req, res) => {
-  const view = await fs.readFile("./reset.html", "utf8");
+  const view = await fs.readFile("./src/reset.html", "utf8");
   const home = ejs.render(view, {
     projectName: "My project",
     userName: "Jamshiddin",
@@ -98,7 +99,7 @@ server.get("/reset.html", async (req, res) => {
 });
 
 server.get("/signup.html", async (req, res) => {
-  const view = await fs.readFile("./signup.html", "utf8");
+  const view = await fs.readFile("./src/signup.html", "utf8");
   const home = ejs.render(view, {
     projectName: "My project",
     userName: "Jamshiddin",
@@ -107,7 +108,7 @@ server.get("/signup.html", async (req, res) => {
 });
 
 server.get("/tables.html", async (req, res) => {
-  const view = await fs.readFile("./tables.html", "utf8");
+  const view = await fs.readFile("./src/tables.html", "utf8");
   const home = ejs.render(view, {
     projectName: "My project",
     userName: "Jamshiddin",
