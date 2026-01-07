@@ -62,7 +62,7 @@ async function renderIndex(req, res) {
 server.get("/", renderIndex);
 server.get("/index.html", renderIndex);
 
-server.get("/404", async (req, res) => {
+server.get("/error.html", async (req, res) => {
   const view = await fs.readFile("./src/error.html", "utf8");
   const home = ejs.render(view, {
     projectName: "My project",
